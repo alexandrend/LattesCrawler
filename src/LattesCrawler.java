@@ -26,6 +26,14 @@ import java.util.concurrent.Semaphore;
 
 /**
  * @author Alexandre Nóbrega Duarte - alexandre@ci.ufpb.br - http://alexandrend.com
+ * 
+ * Sintaxe para uso:  java LattesCrawler arquivo_de_entrada profundidade 
+ * 
+ * Onde arquivo_de_entrada contem um ou mais identificadores números de currículos lattes
+ * e profundidade é um número inteiro indicando a distância a partir do currículo inicial que deve ser percorrida.
+ * 
+ * A saída será impressa na saída padrão e representa uma descrição em formato GML de um grafo.
+ * 
  */
 class Crawler implements Runnable {
 
