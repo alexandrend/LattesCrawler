@@ -56,7 +56,7 @@ public class LattesCrawler {
 			
 			if(next.equals("@")) { 
 				
-				//System.err.println("AGUARDANDO FIM DO NIVEL " + nivel);
+				System.err.println("AGUARDANDO FIM DO NIVEL " + nivel);
 				pool.shutdown();
 				
 				while(!pool.isTerminated() ) {
@@ -67,13 +67,13 @@ public class LattesCrawler {
 						e.printStackTrace();
 					}
 				}
-				//System.err.println( "FIM DO NIVEL " + nivel);
-				//System.err.println("SEEDS " + seeds.size());
+				System.err.println( "FIM DO NIVEL " + nivel);
+				System.err.println("SEEDS " + seeds.size());
 				
 				nivel++;
 				seeds.add("@");
 				pool = Executors.newFixedThreadPool(200);
-	
+				
 			} else {
 				pool.execute(new Crawler(this, next));
 			}
