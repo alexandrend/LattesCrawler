@@ -2,8 +2,11 @@ package br.ufpb.ci.labsna.lattescrawler;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -11,6 +14,10 @@ import java.util.StringTokenizer;
  */
 public class Lattes {
 
+	//Utilizado para tratar lattes de h™monimos, o que pode gerar problemas com o processamento do grafo.
+	private static Map<String,Integer>cvNames = Collections.synchronizedMap(new HashMap<String,Integer> ()); 
+	
+	
 	private String lattesID;
 	private Dictionary <String,Integer>connections;
 	private String name;
@@ -31,7 +38,18 @@ public class Lattes {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		
+		Integer i = Lattes.cvNames.get(name);
+		
+		if( i == null ) {
+			this.name = name;
+			Lattes.cvNames.put(name, new Integer(1));
+		} else {
+			this.name = name + " (" + i + ")";
+			i = i + 1;
+			Lattes.cvNames.put(name, i);
+		}
+			
 	}
 	
 	public String getName(){
@@ -78,7 +96,7 @@ public class Lattes {
 			if( inputLine.contains("\"nome\"")) {
 				
 				setName( inputLine.substring(inputLine.indexOf(">") + 1, inputLine.lastIndexOf("<")).trim());	
-			
+				
 			} else if( inputLine.contains("class=\"texto\">Bolsista de Produtividade em Pesquisa")){
 			
 				setPQ(inputLine.substring(inputLine.lastIndexOf("l")+1, inputLine.lastIndexOf("<")).trim());			
