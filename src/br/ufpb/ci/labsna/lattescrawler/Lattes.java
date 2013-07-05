@@ -1,13 +1,14 @@
 package br.ufpb.ci.labsna.lattescrawler;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.StringTokenizer;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  * @author Alexandre Nóbrega Duarte - alexandre@ci.ufpb.br - http://alexandrend.com
@@ -38,7 +39,7 @@ public class Lattes {
 	}
 
 	public void setName(String name) {
-		
+			
 		Integer i = Lattes.cvNames.get(name);
 		
 		if( i == null ) {
@@ -81,57 +82,29 @@ public class Lattes {
 		return this.nivel;
 	}
 
-	public void extractData(LattesCrawler lc) throws Exception {
+	public void extractData(LattesCrawler lc)  {
 		
-		URL cvlattes = new URL("http://lattes.cnpq.br/" + lattesID);
-
-		//System.err.println(cvlattes);
-		
-		BufferedReader in = new BufferedReader( new InputStreamReader(cvlattes.openStream()));
-
-		String inputLine;		
-    
-		while ((inputLine = in.readLine()) != null) {
+		try {
 			
-			if( inputLine.contains("\"nome\"")) {
-				
-				setName( inputLine.substring(inputLine.indexOf(">") + 1, inputLine.lastIndexOf("<")).trim());	
-				
-			} else if( inputLine.contains("class=\"texto\">Bolsista de Produtividade em Pesquisa")){
+			Document doc = Jsoup.connect("http://lattes.cnpq.br/" + lattesID).timeout(60*1000).get();
 			
-				setPQ(inputLine.substring(inputLine.lastIndexOf("l")+1, inputLine.lastIndexOf("<")).trim());			
-		
-			} else if( inputLine.contains("class=\"texto\">Bolsista de Produtividade Desen.")){
-		
-				setDT(inputLine.substring(inputLine.lastIndexOf("l")+1, inputLine.lastIndexOf("<")).trim());
+			String title[] = Jsoup.parse(doc.select(".nome").toString()).text().split("Bolsista");
+			setName(title[0]);
+			this.nivel = null;
+
+			if( title.length > 1 )
+				this.nivel =  "Bolsista " + title[1];
+
+			Elements links = doc.select("a[href]");		
+			for (Element link : links) {
+			    String l = link.attr("abs:href");
+			    if( l.startsWith("http://lattes.cnpq.br") && !l.endsWith(lattesID))
+			    	addConnection( l.substring(22));
 			}
-			
-			//Procurar por referências para outros curriculos
-			else {
-		
-				StringTokenizer st = new StringTokenizer(inputLine);
-		
-				while( st.hasMoreTokens() ) {
-					String t = st.nextToken();
-		
-					if( t.contains("http://lattes.cnpq.br")) {
-				
-						StringBuffer id = new StringBuffer();
-				
-						for( int i = 0; i < t.length(); i++ )
-							if( Character.isDigit(t.charAt(i)))
-								id.append(t.charAt(i));
-
-						if( id.length() == 16 && !id.equals(lattesID) ) {							
-							addConnection(id.toString());
-						
-						}
-						
-					}
-				}	
-			}
-		
-		}
+		} catch (Exception e) {
+			System.err.println( "http://lattes.cnpq.br/" + lattesID);		
+			e.printStackTrace();
+		}	
 	
 	}
 	
