@@ -29,11 +29,15 @@ class Crawler implements Runnable {
 	public void run(){
 		
 		try {
+			
+			//N‹o queremos sobrecarregar o site do CNPQ. :-)
+			Thread.sleep( (long) (Math.random() * 2000) );
 			        
 			Lattes l = new Lattes(lattesID);
 			l.extractData(lc);
 			
 			lc.addLattes(l);
+			
 			
 			Enumeration <String> con = l.getConnections().keys();
 			while( con.hasMoreElements()) {
