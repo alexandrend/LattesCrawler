@@ -6,10 +6,12 @@ import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -101,6 +103,8 @@ public class LattesCrawler {
 	
 	public static void main(String args[]) throws IOException{ 
 
+			Set <String> seed = new HashSet<String>();
+		
 			LattesCrawler crawler = new LattesCrawler();
 			
 			//System.err.println( "FILE " + args[0]);
@@ -110,7 +114,9 @@ public class LattesCrawler {
 			
 			while( (line = r.readLine())!= null) {
 				crawler.addSeed(line.trim());
-				//System.err.println( "LINE: " + line);
+				
+				seed.add(line.trim());
+				
 			}
 			
 			r.close();
@@ -136,11 +142,21 @@ public class LattesCrawler {
 				
 					System.out.println( "\tnode");
 					System.out.println( "\t[");
-					System.out.println( "\t\tid " + l.getLattesID().hashCode());
-					System.out.println( "\t\tlabel " + "\"" + l.getName() + "\"");
+					System.out.println( "\t\t id " + l.getLattesID());
+					System.out.println( "\t\t label " + "\"" + l.getName() + "\"");
 				
 					if(l.getNivel() != null )
-						System.out.println( "\t\tbolsa " + "\"" + l.getNivel() + "\"");
+						System.out.println( "\t\t bolsa " + "\"" + l.getNivel() + "\"");
+					
+					//System.out.println( "\t\t periodicos " + l.getArtigosP());
+					
+					if(seed.contains(l.getLattesID()))
+						System.out.println( "\t\t seed 1");
+					else	
+						System.out.println( "\t\t seed 0");
+					
+						
+					
 				
 					System.out.println( "\t]");
 				}
@@ -166,9 +182,9 @@ public class LattesCrawler {
 						
 						System.out.println( "\tedge");
 						System.out.println( "\t[");
-						System.out.println( "\t\t source " + l.getLattesID().hashCode());
-						System.out.println( "\t\t target " + dest.getLattesID().hashCode());
-						System.out.println( "\t\tvalue " + p);
+						System.out.println( "\t\t source " + l.getLattesID());
+						System.out.println( "\t\t target " + dest.getLattesID());
+						System.out.println( "\t\t value " + p);
 						System.out.println( "\t]");
 					}
 			
