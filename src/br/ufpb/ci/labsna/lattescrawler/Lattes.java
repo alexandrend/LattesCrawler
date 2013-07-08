@@ -23,10 +23,12 @@ public class Lattes {
 	private Dictionary <String,Integer>connections;
 	private String name;
 	private String nivel;
+	private int artigosP;
 
 	public Lattes(String lattesID) {
 		this.lattesID = lattesID;
 		connections = new Hashtable<String,Integer>();	
+		
 	}
 
 	public void addConnection(String otherLattesID) {
@@ -88,7 +90,7 @@ public class Lattes {
 			
 			Document doc = Jsoup.connect("http://lattes.cnpq.br/" + lattesID).timeout(60*1000).get();
 			
-			String title[] = Jsoup.parse(doc.select(".nome").toString()).text().split("Bolsista");
+			String title[] = doc.select(".nome").text().split("Bolsista");
 			setName(title[0]);
 			this.nivel = null;
 
@@ -98,9 +100,13 @@ public class Lattes {
 			Elements links = doc.select("a[href]");		
 			for (Element link : links) {
 			    String l = link.attr("abs:href");
-			    if( l.startsWith("http://lattes.cnpq.br") && !l.endsWith(lattesID))
+			    if( l.startsWith("http://lattes.cnpq.br") && !l.endsWith(lattesID) && l.substring(22).length() == 16) {
 			    	addConnection( l.substring(22));
+			    }
 			}
+			
+			//setArtigosP(doc.select( ".artigo-completo").size());
+			
 		} catch (Exception e) {
 			System.err.println( "http://lattes.cnpq.br/" + lattesID);		
 			e.printStackTrace();
@@ -111,6 +117,14 @@ public class Lattes {
 	
 	public boolean equals (Lattes o) {
 		return o.getLattesID().equals(getLattesID());
+	}
+
+	public int getArtigosP() {
+		return artigosP;
+	}
+
+	public void setArtigosP(int artigos_periodico) {
+		this.artigosP = artigos_periodico;
 	}
 	
 }
