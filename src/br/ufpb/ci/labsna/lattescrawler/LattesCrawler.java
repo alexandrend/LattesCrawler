@@ -49,7 +49,7 @@ public class LattesCrawler {
 		
 	public Map<String,Lattes> crawl(int maxNivel) throws IOException {
 		
-		ExecutorService pool = Executors.newFixedThreadPool(100);
+		ExecutorService pool = Executors.newFixedThreadPool(200);
 		
 		int nivel = 0;
 		
@@ -75,7 +75,7 @@ public class LattesCrawler {
 				
 				nivel++;
 				seeds.add("@");
-				pool = Executors.newFixedThreadPool(100);
+				pool = Executors.newFixedThreadPool(200);
 				
 			} else {
 				pool.execute(new Crawler(this, next));

@@ -1,5 +1,6 @@
 package br.ufpb.ci.labsna.lattescrawler;
 
+import java.io.IOException;
 import java.util.Enumeration;
 
 
@@ -28,27 +29,40 @@ class Crawler implements Runnable {
 	
 	public void run(){
 		
-		try {
+			//System.err.println( "START Thread" + this);
+		
 			
 			//N‹o queremos sobrecarregar o site do CNPQ. :-)
-			Thread.sleep( (long) (Math.random() * 2000) );
+			try {
+				Thread.sleep( (long) (Math.random() * 2000) );
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			        
 			Lattes l = new Lattes(lattesID);
-			l.extractData(lc);
-			
-			lc.addLattes(l);
-			
-			
-			Enumeration <String> con = l.getConnections().keys();
-			while( con.hasMoreElements()) {
-				String ol = con.nextElement();
-				if( !lc.visited(ol)) {
-					lc.addSeed(ol);				
+			try {
+				l.extractData(lc);
+				lc.addLattes(l);
+				
+				Enumeration <String> con = l.getConnections().keys();
+				while( con.hasMoreElements()) {
+					String ol = con.nextElement();
+					if( !lc.visited(ol)) {
+						lc.addSeed(ol);				
+					}
 				}
+			} catch (IOException e) {
+				System.err.println( e + " http://lattes.cnpq.br/" + lattesID);
+	
+			} catch (LattesNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.err.println(e);
 			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+			
+			//System.err.println( "END Thread" + this);
+			
+
 		
 	}
 

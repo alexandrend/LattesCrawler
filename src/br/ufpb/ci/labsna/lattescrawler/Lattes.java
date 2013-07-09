@@ -1,4 +1,5 @@
 package br.ufpb.ci.labsna.lattescrawler;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -84,13 +85,17 @@ public class Lattes {
 		return this.nivel;
 	}
 
-	public void extractData(LattesCrawler lc)  {
-		
-		try {
+	public void extractData(LattesCrawler lc) throws IOException, LattesNotFoundException  {
 			
-			Document doc = Jsoup.connect("http://lattes.cnpq.br/" + lattesID).timeout(60*1000).get();
+			Document doc = Jsoup.connect("http://lattes.cnpq.br/" + lattesID).timeout(0).get();			
 			
 			String title[] = doc.select(".nome").text().split("Bolsista");
+			
+			if( title[0].length() < 2) {
+					//System.err.println( doc.text());
+					throw new LattesNotFoundException( "http://lattes.cnpq.br/" + lattesID);
+			}
+			
 			setName(title[0]);
 			this.nivel = null;
 
@@ -106,11 +111,6 @@ public class Lattes {
 			}
 			
 			//setArtigosP(doc.select( ".artigo-completo").size());
-			
-		} catch (Exception e) {
-			System.err.println( "http://lattes.cnpq.br/" + lattesID);		
-			e.printStackTrace();
-		}	
 	
 	}
 	
