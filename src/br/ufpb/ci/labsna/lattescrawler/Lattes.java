@@ -12,11 +12,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- * @author Alexandre N—brega Duarte - alexandre@ci.ufpb.br - http://alexandrend.com
+ * @author Alexandre NÃ³brega Duarte - alexandre@ci.ufpb.br - http://alexandrend.com
  */
 public class Lattes {
 
-	//Utilizado para tratar lattes de h™monimos, o que pode gerar problemas com o processamento do grafo.
+	//Utilizado para tratar lattes de homonimos, o que pode gerar problemas com o processamento do grafo.
 	private static Map<String,Integer>cvNames = Collections.synchronizedMap(new HashMap<String,Integer> ()); 
 	
 	

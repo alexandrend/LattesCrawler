@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * @author Alexandre Nóbrega Duarte - alexandre@ci.ufpb.br - http://alexandrend.com
+ * @author Alexandre N√≥brega Duarte - alexandre@ci.ufpb.br - http://alexandrend.com
  */
 public class LattesCrawler {
 	
@@ -34,7 +34,7 @@ public class LattesCrawler {
 		
 	}
 	
-	//Curriculos já recuperados.
+	//Curriculos j√° recuperados.
 	public void addLattes(Lattes l) {
 		cvs.put(l.getLattesID(),l);
 	}
@@ -121,7 +121,7 @@ public class LattesCrawler {
 			
 			r.close();
 			
-		    crawler.addSeed("@"); //Marca de fim de nível
+		    crawler.addSeed("@"); //Marca de fim de n√≠vel
 		    
 		    
 		    Map<String,Lattes> lattes = crawler.crawl(Integer.parseInt(args[1]));
@@ -132,7 +132,7 @@ public class LattesCrawler {
 			System.out.println("\tdirected 0");
 			
 			
-			//Imprimir a definição dos nós
+			//Imprimir a defini¬ç√ß√£o dos n√≥s
 			Iterator <String>it = lattes.keySet().iterator();
 			while( it.hasNext() ) {
 				
@@ -142,7 +142,7 @@ public class LattesCrawler {
 				
 					System.out.println( "\tnode");
 					System.out.println( "\t[");
-					System.out.println( "\t\t id " + l.getLattesID());
+					System.out.println( "\t\t id " + l.getLattesID().substring(0, 5));
 					System.out.println( "\t\t label " + "\"" + l.getName() + "\"");
 				
 					if(l.getNivel() != null )
@@ -163,7 +163,7 @@ public class LattesCrawler {
 				
 			}
 			
-			//Imprimir a definição dos arcos
+			//Imprimir a defini¬ç√ß√£o dos arcos
 			it = lattes.keySet().iterator();
 			
 			while( it.hasNext()) {
@@ -182,8 +182,8 @@ public class LattesCrawler {
 						
 						System.out.println( "\tedge");
 						System.out.println( "\t[");
-						System.out.println( "\t\t source " + l.getLattesID());
-						System.out.println( "\t\t target " + dest.getLattesID());
+						System.out.println( "\t\t source " + l.getLattesID().substring(0, 5));
+						System.out.println( "\t\t target " + dest.getLattesID().substring(0, 5));
 						System.out.println( "\t\t value " + p);
 						System.out.println( "\t]");
 					}

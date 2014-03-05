@@ -5,14 +5,14 @@ import java.util.Enumeration;
 
 
 /**
- * @author Alexandre Nóbrega Duarte - alexandre@ci.ufpb.br - http://alexandrend.com
+ * @author Alexandre N√≥brega Duarte - alexandre@ci.ufpb.br - http://alexandrend.com
  * 
  * Sintaxe para uso:  java LattesCrawler arquivo_de_entrada profundidade 
  * 
- * Onde arquivo_de_entrada contem um ou mais identificadores números de currículos lattes
- * e profundidade é um número inteiro indicando a distância a partir do currículo inicial que deve ser percorrida.
+ * Onde arquivo_de_entrada contem um ou mais identificadores n√∫meros de curr√≠culos lattes
+ * e profundidade √© um n√∫mero inteiro indicando a dist√¢ncia a partir do curr√≠culo inicial que deve ser percorrida.
  * 
- * A saída será impressa na saída padrão e representa uma descrição em formato GML de um grafo.
+ * A sa√≠da ser√° impressa na sa√≠da padr√£o e representa uma descri¬ç√ß√£o em formato GML de um grafo.
  * 
  */
 class Crawler implements Runnable {
@@ -32,7 +32,7 @@ class Crawler implements Runnable {
 			//System.err.println( "START Thread" + this);
 		
 			
-			//Não queremos sobrecarregar o site do CNPQ. :-)
+			//N√£o queremos sobrecarregar o site do CNPQ. :-)
 			try {
 				Thread.sleep( (long) (Math.random() * 2000) );
 			} catch (InterruptedException e) {
